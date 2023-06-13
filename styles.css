@@ -1,0 +1,296 @@
+@font-face {
+    font-family: Beleren;
+    src: url(./Fonts/Beleren2016-Bold.ttf);
+}
+
+body {
+min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+margin: 0;
+background-image: url("./images/Gray_Patterned_BG.jpg");
+ background-color: #cccccc;
+ min-height: 100vh; 
+ color: white;
+ font-size: 18px;
+ 
+}
+
+main {
+    max-width: 1450px;
+    margin: auto;
+    margin-top: 150px;
+    padding: 1rem;
+}
+
+footer {
+    background-color: #3c3c3c;
+    margin-top: 50px;
+    padding: 10px;
+    box-shadow: #3c3c3c 10px 0px 200px 30px;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    font-family: Beleren;
+    font-size: 14px;
+    font-weight: 100;
+}
+
+footer p {
+    margin-top: 20px;
+}
+
+.navBar{
+    width: 300px;
+}
+
+.searchInput {
+    width: 300px;
+    min-width: 250px;
+    padding: 12px 20px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    border: none;
+}
+
+#searchInput:focus, #searchInput:active{
+    outline: none;
+}
+
+*:focus {
+    outline: none;
+}
+
+
+
+
+h1 {
+    font-size: 70px;
+    font-weight: bold;
+    font-family: Beleren;
+background: #F6F8F9;
+background: radial-gradient(circle farthest-side at center center, #F6F8F9 0%, #E5EBEE 30%, #D7DEE3 60%, #F5F7F9 100%);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+}
+
+a {
+    color: white;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #e05d00;
+}
+
+a:visited {
+    color: white;
+}
+
+a:active {
+    color: #e05d00;
+}
+
+.card {
+    margin: 0;
+    padding: 20px;
+    background-color: #606060;
+    border: #727272 solid 5px;
+    width: 340px;
+    border-radius: 5px;
+    height: 600px;
+    margin-bottom: 20px;
+    overflow: scroll;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.card::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.card {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.card p {
+    font-size: 16px;
+}
+
+.card span {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.card h3 {
+    font-family: Beleren;
+    background: #F6F8F9;
+background: radial-gradient(circle farthest-side at center center, #F6F8F9 0%, #E5EBEE 30%, #D7DEE3 60%, #F5F7F9 100%);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+}
+
+.card img {
+    margin: auto;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    margin: 0;
+    margin-bottom: 10px;
+}
+
+.cardText {
+    font-size: 12px;
+    font-weight: 200;
+}
+
+.cardTitle {
+    font-size: 40px;
+    font-family: Beleren;
+    font-weight: bold;
+    background: #FFB76B;
+background: linear-gradient(to right, #FFB76B 0%, #FFA73D 30%, #FF7C00 60%, #FF7F04 100%);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+margin-bottom: 20px;
+}
+
+#cardsList {
+    margin: auto;
+}
+
+.searchForm {
+    position: relative;
+    margin: auto;
+    width: fit-content;
+}
+
+.searchFormAllCards {
+ margin: 0;
+}
+
+.suggestionsList {
+    display: none;
+    list-style: none;
+    width: 200px;
+    margin: auto;
+    background-color: white;
+    padding: 5px;
+    color: #606060;
+    position: absolute;
+    z-index: 1;
+    top: 100%;
+    width: 100%;
+    border: none;
+    border-radius: 0px 0px 10px 10px;
+    max-height: 250px;
+    overflow: scroll;
+    overflow-x: hidden;
+}
+
+
+
+#cardResult {
+    margin-top: 30px;
+}
+
+.suggestion {
+    margin: 5px 0px 5px 0px;
+    border-radius: 5px;
+    padding: 8px;
+    cursor: pointer;
+    background-color: rgb(241, 241, 241);
+    color: rgb(45, 45, 45);
+}
+
+.suggestion:hover {
+    background: #FFB76B;
+background: linear-gradient(to right, #FFB76B 0%, #FFA73D 30%, #FF7C00 60%, #FF7F04 100%);
+color: white;
+}
+
+#randomCard {
+    color: white;
+        background: #FFB76B;
+background: linear-gradient(to right, #FFB76B 0%, #FFA73D 30%, #FF7C00 60%, #FF7F04 100%);
+}
+
+#allCards {
+    color: black;
+    background: #F6F8F9;
+background: radial-gradient(circle farthest-side at center center, #F6F8F9 0%, #E5EBEE 30%, #D7DEE3 60%, #F5F7F9 100%);
+}
+
+#sortingOptions {
+    width: 300px;
+    margin-bottom: 20px;
+    background-color: white;
+    color: #606060;
+    border-radius: 5px;
+    padding: 10px 20px 10px 20px;
+    appearance: none;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1em;
+}
+
+.searchInputAllCards {
+    margin-bottom: 20px;
+    width: 300px;
+    min-width: 250px;
+    padding: 12px 20px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    border: none;
+}
+
+#searchInputAllCards:focus, #searchInputAllCards:focus{
+    outline: none;
+}
+
+*:focus {
+    outline: none;
+}
+
+#activeLink {
+    color: #e05d00;
+    background-color: #ccc;
+    border-radius: 30px;
+    padding: 10px 20px 10px 20px;
+    width: auto;
+}
+
+#inactiveLink {
+    color: #ffffff;
+    background-color: #ccc;
+    border-radius: 30px;
+    padding: 10px 20px 10px 20px;
+}
+
+#activeLink:hover {
+    background-color: #606060;
+    color: white;
+}
+
+#inactiveLink:hover {
+    background-color: #606060;
+    color: white;
+}
+
+
+@media only screen and (max-width: 600px) {
+    .card {
+        width: 90%;
+        height: 600px;
+    }
+
+    #sortingOptions {
+        width: 90%;
+        height: 60px;
+    }
+}
+
