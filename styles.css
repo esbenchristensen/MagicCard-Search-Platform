@@ -294,7 +294,7 @@ background: radial-gradient(circle farthest-side at center center, #F6F8F9 0%, #
     }
 
     main {
-    margin-top: 50px;
+    margin-top: 50px !important;
 }
 }
 
