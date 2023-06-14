@@ -3,6 +3,8 @@ const searchInput = document.getElementById("search"); // Henter inputfeltet til
 const suggestionsList = document.getElementById("suggestionsList"); // Henter listen til forslag
 const cardResult = document.getElementById("cardResult"); // Henter resultatområdet til kortvisning
 const yearSpan = document.getElementById("year"); // Henter elementet til visning af årstal
+const uniqueSuggestions = []; //Unikke forslag
+const uniqueCards = []; //Unikke kort til visning v. tilfæligt kort
 
 // Tjekker efter submit i søgeformularen
 document.getElementById("searchForm").addEventListener("submit", function (event) {
@@ -11,15 +13,33 @@ document.getElementById("searchForm").addEventListener("submit", function (event
     searchCards(); // Kalder søgefunktionen
 });
 
+// Tjekker input-begivenheden i søgefeltet
 searchInput.addEventListener("input", function () {
-    // Tjekker input-begivenheden i søgefeltet
     showSuggestions(); // Kalder funktionen til visning af forslag når der er input i søgefeltet
 });
 
+// Tjekker efter klik på knappen "Tilfældigt kort"
 document.getElementById("randomCard").addEventListener("click", function () {
-    // Tjekker efter klik på knappen "Tilfældigt kort"
     randomCard(); // Kalder funktionen til visning af tilfældigt kort
 });
+
+// Henter automatisk kort fra API - Henter alle kort og tilføjer dem til cards-arrayet
+fetch("https://api.magicthegathering.io/v1/cards")
+    .then((response) => response.json())
+    .then((data) => {
+        cards.push(...data.cards);
+    })
+    .catch((error) => {
+        console.error("Fejl ved hentning af kort:", error);
+    });
+
+// Funktion til visning af det aktuelle år
+function displayYear() {
+    const currentYear = new Date().getFullYear();
+    yearSpan.textContent = currentYear;
+}
+
+displayYear(); // Kalder funktionen til visning af årstal
 
 // Funktion til at oprette et kort-element
 function createCardElement(card) {
@@ -100,8 +120,15 @@ function searchCards() {
 // Funktion til visning af tilfældigt kort ved klik på Tilfældigt kort knappen
 function randomCard() {
     clearCards(); // Rydder kortresultatområdet
+    //Laver et array af unikke kort for at undgå duplikatkort og kort uden billede
+    cards.map((card) => {
+        if (!uniqueCards.includes(card.name) && card.imageUrl) {
+            uniqueCards.push(card);
+        }
+    });
     // Opretter et tilfældigt kort fra cards-arrayet
-    var randomCard = cards[Math.floor(Math.random() * cards.length)];
+    var randomCard = uniqueCards[Math.floor(Math.random() * uniqueCards.length)];
+    console.log(randomCard);
     createCards([randomCard]); // Viser det tilfældige kort
 }
 
@@ -112,11 +139,15 @@ function showSuggestions() {
         return card.name && containsLetters(card.name.toLowerCase(), searchTerm);
     });
 
+    // Funktion til at tjekke om et kort indeholder alle bogstaver i søgetermen
     function containsLetters(name, term) {
+        //Splitter bogstaver op i et array
         const termLetters = term.split("");
+        //Tjekker om hvert element i arrayet findes i kortnavnet - Hvis det er true vises kortet i suggestions
         return termLetters.every((letter) => name.includes(letter));
     }
 
+    uniqueSuggestions.length = 0; // Nulstil unikke forslag-arrayet for hver input-begivenhed i søgefeltet så man ikke får forslag fra tidligere søgninger
     suggestionsList.innerHTML = "";
 
     if (searchTerm === "") {
@@ -130,7 +161,7 @@ function showSuggestions() {
     searchInput.style.borderBottomRightRadius = suggestedCards.length > 0 ? "0" : "5px";
 
     // Opretter et array til unikke forslag
-    const uniqueSuggestions = [];
+
     suggestedCards.forEach((card) => {
         if (!uniqueSuggestions.includes(card.name)) {
             uniqueSuggestions.push(card.name);
@@ -149,21 +180,3 @@ function showSuggestions() {
         suggestionsList.appendChild(suggestionItem);
     });
 }
-
-function displayYear() {
-    // Funktion til visning af det aktuelle år
-    const currentYear = new Date().getFullYear();
-    yearSpan.textContent = currentYear;
-}
-
-displayYear(); // Kalder funktionen til visning af årstal
-
-// Henter automatisk kort fra API - Henter alle kort og tilføjer dem til cards-arrayet
-fetch("https://api.magicthegathering.io/v1/cards")
-    .then((response) => response.json())
-    .then((data) => {
-        cards.push(...data.cards);
-    })
-    .catch((error) => {
-        console.error("Fejl ved hentning af kort:", error);
-    });

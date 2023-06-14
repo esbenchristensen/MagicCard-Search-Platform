@@ -14,6 +14,30 @@ document.getElementById("sortingOptions").addEventListener("change", (event) => 
     displayCards();
 });
 
+// Henter kortene fra API'en og tilføjer dem til "cards" arrayet
+fetch("https://api.magicthegathering.io/v1/cards")
+    .then((response) => {
+        return response.json();
+    })
+    .then((data) => {
+        cards.push(...data.cards);
+        //Skjuler loading state
+        document.getElementById("loadingState").style.display = "none";
+        displayCards(); // Kald displayCards efter kortene er blevet hentet
+    })
+    .catch((error) => {
+        console.error("Fejl ved hentning af kort:", error);
+    });
+
+// Funktion til at vise året i HTML-dokumentet
+function displayYear() {
+    const currentYear = new Date().getFullYear();
+    yearSpan.textContent = currentYear;
+}
+
+// Viser det aktuelle år
+displayYear();
+
 // Funktion til at oprette et kort-element baseret på kortdata
 function createCardElement(card) {
     const cardElement = document.createElement("div");
@@ -33,8 +57,8 @@ function createCardElement(card) {
         cardHTML += `<p>Rarity: <br/><span class="fw-bold">${card.rarity}</span></p>`;
     }
 
-    if (card.manacost) {
-        cardHTML += `<p>Mana: <br/><span class="fw-bold">${card.manacost}</span></p>`;
+    if (card.manaCost) {
+        cardHTML += `<p>Mana: <br/><span class="fw-bold">${card.manaCost}</span></p>`;
     }
 
     if (card.power) {
@@ -82,11 +106,23 @@ function createCards(cards) {
             return rarityOrder[b.rarity] - rarityOrder[a.rarity];
         });
     } else if (selectedSortingOption === "manacost") {
-        cards.sort((a, b) => a.manaCost - b.manaCost);
+        cards.sort((a, b) => {
+            if (!a.cmc) return 1; // Flyt kort uden cmc til bunden
+            if (!b.cmc) return -1; // Flyt kort uden cmc til bunden
+            return parseInt(b.cmc) - parseInt(a.cmc);
+        });
     } else if (selectedSortingOption === "power") {
-        cards.sort((a, b) => a.power - b.power);
+        cards.sort((a, b) => {
+            if (!a.power) return 1; // Flyt kort uden power til bunden
+            if (!b.power) return -1; // Flyt kort uden power til bunden
+            return parseInt(b.power) - parseInt(a.power);
+        });
     } else if (selectedSortingOption === "toughness") {
-        cards.sort((a, b) => a.toughness - b.toughness);
+        cards.sort((a, b) => {
+            if (!a.toughness) return 1; // Flyt kort uden toughness til bunden
+            if (!b.toughness) return -1; // Flyt kort uden toughness til bunden
+            return parseInt(b.toughness) - parseInt(a.toughness);
+        });
     }
 
     // Itererer over kortene og opretter kort-elementer for hvert kort
@@ -94,7 +130,7 @@ function createCards(cards) {
     cards.map((card) => {
         if (!uniqueCards.includes(card.name)) {
             const cardElement = createCardElement(card);
-            setCardBorder(cardElement, card.rarity); // Anvender orange ramme, hvis kortet er "Rare"
+            setCardBorder(cardElement, card.rarity); // Anvender orange ramme, hvis kortet er "Rare" og Sølv ramme, hvis det er "Uncommon"
             cardsList.appendChild(cardElement);
             uniqueCards.push(card.name);
         }
@@ -112,25 +148,5 @@ function clearCards() {
 // Funktion til at vise kortene
 function displayCards() {
     // Opretter kortene og viser dem
-    createCards(cards);
+    createCards(cards); // <------------------------ Herfra kommer kort fra cards arrayet
 }
-
-// Funktion til at vise året i HTML-dokumentet
-function displayYear() {
-    const currentYear = new Date().getFullYear();
-    yearSpan.textContent = currentYear;
-}
-
-// Viser det aktuelle år
-displayYear();
-
-// Henter kortene fra API'en og tilføjer dem til "cards" arrayet
-fetch("https://api.magicthegathering.io/v1/cards")
-    .then((response) => response.json())
-    .then((data) => {
-        cards.push(...data.cards);
-        displayCards(); // Kald displayCards efter kortene er blevet hentet
-    })
-    .catch((error) => {
-        console.error("Fejl ved hentning af kort:", error);
-    });
